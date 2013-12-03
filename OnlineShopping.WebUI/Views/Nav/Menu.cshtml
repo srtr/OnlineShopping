@@ -1,0 +1,19 @@
+﻿@model IEnumerable<string>
+
+@{ 
+Layout = null; 
+} 
+
+<li>
+@Html.ActionLink("All", "List", "Product") 
+</li>
+
+@foreach (var link in Model) { 
+       <li class="@((ViewBag.SelectedCategoryName == link) ? "active" : "")">
+    @Html.RouteLink(link, new { 
+controller = "Product", 
+action = "List", 
+categoryName = link, 
+page = 1 
+}) 
+</li>}
