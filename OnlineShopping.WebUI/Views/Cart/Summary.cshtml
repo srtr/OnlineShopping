@@ -1,0 +1,19 @@
+﻿@model OnlineShopping.Domain.Entities.Cart
+
+@{ 
+Layout = null; 
+} 
+
+<button type="button" class="btn btn-info" onclick=proceedToCheckout()>
+    <b>Your cart: </b>
+    @Model.Lines.Sum(x => x.Quantity) item(s),
+    @Model.ComputeTotalValue().ToString("c")
+</button>
+
+<script>
+    function proceedToCheckout() {
+        window.location.href = "@Url.Action("Index", "Cart")";
+    }
+    
+</script>
+

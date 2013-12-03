@@ -1,19 +1,21 @@
 ﻿@model OnlineShopping.WebUI.Models.ProductsListViewModel
-
-
 @{
     ViewBag.Title = "Products";
+    
 }
 
-@foreach (var p in Model.Products) {
-    Html.RenderPartial("ProductSummary", p);
+<div class="row">
+    @foreach (var p in Model.Products)
+    {
+        Html.RenderPartial("ProductSummary", p);
 
-}
+    }
+</div>
 
-<ul class="pagination pagination-lg"> 
-@Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new {page = x}))
+<ul class="pagination pagination-lg">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x, categoryName = Model.CurrentCategoryName }))
 </ul>
 
-<div>
-@Model.PagingInfo.TotalPages
-</div>
+<ul class="pager">
+        <li><a href="#">@Model.PagingInfo.CurrentPage of @Model.PagingInfo.TotalPages </a></li>
+</ul>
