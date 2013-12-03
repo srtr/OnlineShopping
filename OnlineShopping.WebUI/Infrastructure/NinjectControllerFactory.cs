@@ -7,6 +7,7 @@ using OnlineShopping.Domain.Abstract;
 using OnlineShopping.Domain.Entities;
 using System.Linq;
 using OnlineShopping.Domain.Concrete;
+using System.Configuration;
 
 
 namespace OnlineShopping.WebUI.Infrastructure
@@ -32,7 +33,16 @@ namespace OnlineShopping.WebUI.Infrastructure
             ninjectKernel.Bind<IProductRepository>().To<EFProductRepository>();
             ninjectKernel.Bind<IManufacturerRepository>().To<EFManufacturerRepository>();
             ninjectKernel.Bind<ICategoryRepository>().To<EFCategoryRepository>();
-           // ninjectKernel.Bind<ICustomerRepository>().To<EFCustomerRepository>();
+            ninjectKernel.Bind<ITransactionDetailRepository>().To<EFTransactionDetailRepository>();
+            ninjectKernel.Bind<ITransactionRepository>().To<EFTransactionRepository>();
+
+            EmailSettings emailSettings = new EmailSettings
+            {
+                WriteAsFile
+                = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile"] ?? "false")
+            };
+            ninjectKernel.Bind<IOrderProcessor>()
+            .To<EmailOrderProcessor>().WithConstructorArgument("settings", emailSettings);
 
         }
     }

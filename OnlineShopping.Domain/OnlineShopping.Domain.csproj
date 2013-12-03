@@ -55,17 +55,27 @@
   <ItemGroup>
     <Compile Include="Abstract\ICategoryRepository.cs" />
     <Compile Include="Abstract\IManufacturerRepository.cs" />
+    <Compile Include="Abstract\IOrderProcessor.cs" />
     <Compile Include="Abstract\IProductRepository.cs" />
+    <Compile Include="Abstract\ITransactionDetailRepository.cs" />
+    <Compile Include="Abstract\ITransactionRespository.cs" />
     <Compile Include="Concrete\EFCategoryRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFManufacturerRepository.cs" />
     <Compile Include="Concrete\EFProductRepository.cs" />
+    <Compile Include="Concrete\EFTransactionDetailRepository.cs" />
+    <Compile Include="Concrete\EFTransactionRepository.cs" />
+    <Compile Include="Concrete\EmailOrderProcessor.cs" />
+    <Compile Include="Entities\Cart.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Manufacturer.cs" />
     <Compile Include="Entities\Product.cs" />
-    <Compile Include="Migrations\201311280743442_iteration-1.cs" />
-    <Compile Include="Migrations\201311280743442_iteration-1.Designer.cs">
-      <DependentUpon>201311280743442_iteration-1.cs</DependentUpon>
+    <Compile Include="Entities\ShippingDetails.cs" />
+    <Compile Include="Entities\Transaction.cs" />
+    <Compile Include="Entities\TransactionDetail.cs" />
+    <Compile Include="Migrations\201311301535215_transaction_added.cs" />
+    <Compile Include="Migrations\201311301535215_transaction_added.Designer.cs">
+      <DependentUpon>201311301535215_transaction_added.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,8 +85,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201311280743442_iteration-1.resx">
-      <DependentUpon>201311280743442_iteration-1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201311301535215_transaction_added.resx">
+      <DependentUpon>201311301535215_transaction_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

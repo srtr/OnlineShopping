@@ -13,6 +13,8 @@ namespace OnlineShopping.Domain.Concrete
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TransactionDetail> TransactionDetails { get; set; }
         //public DbSet<Customer> Customers { get; set; }
     }
 }
