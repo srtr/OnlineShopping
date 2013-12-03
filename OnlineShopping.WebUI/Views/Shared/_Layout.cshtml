@@ -3,18 +3,74 @@
 <head>
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/offcanvas.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
 </head>
 
-<sbody>
-    <div id="header"> 
-    <h1>SPORTS STORE</h1> 
-    </div> 
-    <div id="categories"> 
-    Will put something useful here later 
-    </div> 
-    <div id="content"> 
-    @RenderBody() 
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <form class="navbar-form navbar-right">
+                    @{Html.RenderAction("Summary", "Cart");}
+                    @Html.Partial("_LogOnPartial")
+
+                </form>
+            </div>
+            <!--/.navbar-collapse -->
+        </div>
     </div>
-</sbody>
+
+
+    <div class="container">
+        <div class="row row-offcanvas row-offcanvas-right">
+            <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+                <ul class="nav nav-pills nav-stacked">
+                    @{Html.RenderAction("Menu", "Nav"); }
+                </ul>
+            </div>
+            <!--/span-->
+
+            <div class="col-xs-12 col-sm-9">
+                <p class="pull-right visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                </p>
+                <div class="jumbotron">
+                    <h1>Online Shopping</h1>
+                    <p>GPRS bootstrap customer login</p>
+                </div>
+                    @RenderBody()
+                    <!--/span-->
+
+                <!--/row-->
+            </div>
+            <!--/span-->
+        </div>
+        <!--/row-->
+
+        <hr>
+
+        <footer>
+            <p>&copy; CG3002 Group-9 Copyright</p>
+        </footer>
+
+    </div>
+    <!--/.container-->
+
+    <style type="text/css">
+        .form-control {
+            margin-bottom: 10px;
+        }
+    </style>
+
+</body>
 </html>
