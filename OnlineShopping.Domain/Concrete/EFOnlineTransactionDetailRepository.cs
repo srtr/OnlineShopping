@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace OnlineShopping.Domain.Concrete
 {
-    public class EFTransactionDetailRepository : ITransactionDetailRepository
+    public class EFOnlineTransactionDetailRepository : IOnlineTransactionDetailRepository
     {
         private EFDbContext context = new EFDbContext();
-        public IQueryable<TransactionDetail> TransactionDetails
+        public IQueryable<OnlineTransactionDetail> TransactionDetails
         {
             get { return context.TransactionDetails; }
         }
 
-        public void saveTransactionDetail(TransactionDetail transactionDetail)
+        public void saveTransactionDetail(OnlineTransactionDetail transactionDetail)
         {
             if (context.Entry(transactionDetail).State == EntityState.Detached)
             {
@@ -28,7 +28,7 @@ namespace OnlineShopping.Domain.Concrete
             context.SaveChanges();
         }
 
-        public void quickSaveTransactionDetail(TransactionDetail transactionDetail)
+        public void quickSaveTransactionDetail(OnlineTransactionDetail transactionDetail)
         {
             context.TransactionDetails.Add(transactionDetail);
         }
@@ -38,7 +38,7 @@ namespace OnlineShopping.Domain.Concrete
             context.SaveChanges();
         }
 
-        public void deleteTransactionDetail(TransactionDetail TransactionDetail)
+        public void deleteTransactionDetail(OnlineTransactionDetail TransactionDetail)
         {
             context.TransactionDetails.Remove(TransactionDetail);
             context.SaveChanges();

@@ -9,15 +9,15 @@ using System.Text;
 
 namespace OnlineShopping.Domain.Concrete
 {
-    public class EFTransactionRepository : ITransactionRepository
+    public class EFOnlineTransactionRepository : IOnlineTransactionRepository
     {
         private EFDbContext context = new EFDbContext();
-        public IQueryable<Transaction> Transactions
+        public IQueryable<OnlineTransaction> Transactions
         {
             get { return context.Transactions; }
         }
 
-        public void saveTransaction(Transaction Transaction)
+        public void saveTransaction(OnlineTransaction Transaction)
         {
             if (context.Entry(Transaction).State == EntityState.Detached)
             {
@@ -28,7 +28,7 @@ namespace OnlineShopping.Domain.Concrete
             context.SaveChanges();
         }
 
-        public void quickSaveTransaction(Transaction Transaction)
+        public void quickSaveTransaction(OnlineTransaction Transaction)
         {
             context.Transactions.Add(Transaction);
         }
@@ -38,7 +38,7 @@ namespace OnlineShopping.Domain.Concrete
             context.SaveChanges();
         }
 
-        public void deleteTransaction(Transaction Transaction)
+        public void deleteTransaction(OnlineTransaction Transaction)
         {
             context.Transactions.Remove(Transaction);
             context.SaveChanges();

@@ -7,13 +7,12 @@ using System.Text;
 
 namespace OnlineShopping.Domain.Entities
 {
-    public class TransactionDetail
+    public class OnlineTransaction
     {
-        [Key, Column(Order = 0)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int transactionID { get; set; }
-        [Key, Column(Order = 2)]
-        public string barcode { get; set; }
-        public int unitSold { get; set; }
-        public float cost { get; set; }
+        public DateTime date { get; set; }
+        public int cashierID { get; set; }
+        public string userKey { get; set; }
     }
 }
