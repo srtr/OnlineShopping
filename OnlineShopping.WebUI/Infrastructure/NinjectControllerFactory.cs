@@ -33,8 +33,8 @@ namespace OnlineShopping.WebUI.Infrastructure
             ninjectKernel.Bind<IProductRepository>().To<EFProductRepository>();
             ninjectKernel.Bind<IManufacturerRepository>().To<EFManufacturerRepository>();
             ninjectKernel.Bind<ICategoryRepository>().To<EFCategoryRepository>();
-            ninjectKernel.Bind<ITransactionDetailRepository>().To<EFTransactionDetailRepository>();
-            ninjectKernel.Bind<ITransactionRepository>().To<EFTransactionRepository>();
+            ninjectKernel.Bind<IOnlineTransactionDetailRepository>().To<EFOnlineTransactionDetailRepository>();
+            ninjectKernel.Bind<IOnlineTransactionRepository>().To<EFOnlineTransactionRepository>();
 
             EmailSettings emailSettings = new EmailSettings
             {

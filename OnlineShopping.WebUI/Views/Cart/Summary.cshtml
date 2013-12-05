@@ -5,7 +5,7 @@ Layout = null;
 } 
 
 <button type="button" class="btn btn-info" onclick=proceedToCheckout()>
-    <b>Your cart: </b>
+    <i class="glyphicon glyphicon-shopping-cart"> </i>
     @Model.Lines.Sum(x => x.Quantity) item(s),
     @Model.ComputeTotalValue().ToString("c")
 </button>
@@ -17,3 +17,4 @@ Layout = null;
     
 </script>
 
+ 
