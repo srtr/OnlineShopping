@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace OnlineShopping.Domain.Entities
 {
     public class Cart { 
+
         private List<CartLine> lineCollection = new List<CartLine>(); 
         public void AddItem(Product product, int quantity) { 
         CartLine line = lineCollection 
@@ -41,6 +42,8 @@ namespace OnlineShopping.Domain.Entities
     public class CartLine
     {
         public Product Product { get; set; }
+        public string categoryName { get; set; }
+        public string manufacturerName { get; set; }
         public int Quantity { get; set; }
     }
 }

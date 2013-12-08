@@ -1,5 +1,62 @@
-﻿@{
-    ViewBag.Title = "Orders";
-}
+﻿@model OnlineShopping.WebUI.Models.OnlineTransactionsViewModel
+@{
+    
+    <div class="col-sm-12 col-md-10 col-md-offset-1">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th></th>
+                    <th class="text-center">SubTotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
 
-<h2>Orders</h2>
+                @foreach (var xact in Model.onlineTransactions)
+                {
+                    <td class="alert alert-success"><strong>Date of Purchase: @xact.date</strong></td>
+                    var detail = Model.onlineTransactionDetails.Where(p => p.transactionID == xact.transactionID);
+                    if (detail.ToArray().Length > 0)
+                    {
+                        foreach (var item in detail)
+                        {
+                    <tr>
+                        <td class="col-sm-8 col-md-6">
+                            <div class="media">
+                                <a class="thumbnail pull-left" href="#">
+                                    <img class="media-object" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png" style="width: 72px; height: 72px;">
+                                </a>
+                                <div class="media-body"> 
+                                    <h4 class="media-heading"><a href="#">@Model.products.Where(p => p.barcode == item.barcode).Select(p => p.productName).FirstOrDefault()</a></h4>
+                                    <h5 class="media-heading">by <a href="#">@item.unitSold</a></h5>
+                   
+                                    <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-sm-1 col-md-1" style="text-align: center">
+                            <strong>@item.unitSold</strong>
+                        </td>
+                        <td></td>
+                        <td class="col-sm-1 col-md-1 text-center"><strong>$@item.totalCost</strong></td>
+                    </tr>
+                        }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <h4>Total</h4>
+                        </td>
+                        <td class="text-right">
+                            <h4>$@xact.totalTransactionCost</h4>
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}

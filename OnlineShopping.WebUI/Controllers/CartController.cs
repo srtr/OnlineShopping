@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Net;
 using OnlineShopping.Domain.Entities;
 using OnlineShopping.Domain.Abstract;
 using OnlineShopping.WebUI.Models;
@@ -12,25 +13,27 @@ namespace OnlineShopping.WebUI.Controllers
 {
     public class CartController : Controller
     {
-        private IProductRepository repository;
+        private IProductRepository _productRepo;
+        private ICategoryRepository _categoryRepo;
+        private IManufacturerRepository _manufacturerRepo;
         private IOrderProcessor orderProcessor;
+        private IOnlineTransactionRepository _transactionRepo;
+        private IOnlineTransactionDetailRepository _transactionDetailRepo;
+        
 
-        IOnlineTransactionRepository _transactionRepo;
-        IOnlineTransactionDetailRepository _transactionDetailRepo;
-        IProductRepository _productRepo;
-
-        public CartController(IProductRepository repo, IOrderProcessor proc, IOnlineTransactionRepository transactionRepo, IOnlineTransactionDetailRepository transactionDetailRepo, IProductRepository productRepo)
+        public CartController(IProductRepository productRepo,ICategoryRepository categoryRepo,IManufacturerRepository manufacturerRepo,IOrderProcessor proc, IOnlineTransactionRepository transactionRepo, IOnlineTransactionDetailRepository transactionDetailRepo)
         {
-            repository = repo;
             orderProcessor = proc;
             _transactionRepo = transactionRepo;
             _transactionDetailRepo = transactionDetailRepo;
             _productRepo = productRepo;
+            _categoryRepo = categoryRepo;
+            _manufacturerRepo = manufacturerRepo;
         }
 
         public RedirectToRouteResult AddToCart(Cart cart, int productId, string returnUrl)
         {
-            Product product = repository.Products
+            Product product = _productRepo.Products
             .FirstOrDefault(p => p.productID == productId);
             if (product != null)
             {
@@ -42,7 +45,7 @@ namespace OnlineShopping.WebUI.Controllers
         public RedirectToRouteResult RemoveFromCart(Cart cart,
         int productId, string returnUrl)
         {
-            Product product = repository.Products
+            Product product = _productRepo.Products
             .FirstOrDefault(p => p.productID == productId);
             if (product != null)
             {
@@ -53,6 +56,12 @@ namespace OnlineShopping.WebUI.Controllers
 
         public ViewResult Index(Cart cart, string returnUrl)
         {
+            foreach (var item in cart.Lines)
+            {
+                item.categoryName = _categoryRepo.Categories.Where(p => p.categoryID == item.Product.categoryID).First().categoryName;
+                item.manufacturerName = _manufacturerRepo.Manufacturers.Where(p => p.manufacturerID == item.Product.manufacturerID).First().manufacturerName;
+            }
+  
             return View(new CartIndexViewModel
             {
                 Cart = cart,
@@ -62,19 +71,79 @@ namespace OnlineShopping.WebUI.Controllers
 
         public ViewResult Summary(Cart cart)
         {
+            int x = cart.Lines.ToArray().Length;
             return View(cart);
         }
 
         public ViewResult Orders()
         {
-            return View();
+            string currentUserID = Membership.GetUser(User.Identity.Name, true /* userIsOnline */).ProviderUserKey.ToString();
+            IEnumerable<OnlineTransaction> userTransactions;
+            IEnumerable<OnlineTransactionDetail> userTransactionDetails = Enumerable.Empty<OnlineTransactionDetail>();
+            IEnumerable<OnlineTransactionDetail> tmpDetails;
+            IEnumerable<Product> productDetails = Enumerable.Empty<Product>();
+
+           // userTransactions = _transactionRepo.Transactions.Where(p => p.userKey == currentUserID).OrderByDescending(p => p.date);
+            userTransactions = _transactionRepo.Transactions.Where(p => p.userKey == "cg3002").OrderByDescending(p => p.date);
+            foreach (var xact in userTransactions)
+            {
+                tmpDetails = _transactionDetailRepo.TransactionDetails.Where(p => p.transactionID == xact.transactionID);
+                userTransactionDetails = userTransactionDetails.Concat(tmpDetails);
+            }
+
+            foreach(var item in userTransactionDetails){
+                productDetails = productDetails.Concat(_productRepo.Products.Where(p => p.barcode == item.barcode));
+            }
+
+            OnlineTransactionsViewModel viewModel = new OnlineTransactionsViewModel
+            {
+                onlineTransactions = userTransactions,
+                onlineTransactionDetails = userTransactionDetails,
+                products = productDetails
+            };
+
+            return View(viewModel);
+            //return View();
         }
 
-        public void saveCartItems(Cart cart)
+        public ActionResult sendCustomerEmail(OnlineTransaction savedXact)
         {
+            string currentUserID = Membership.GetUser(User.Identity.Name, true /* userIsOnline */).ProviderUserKey.ToString();
+            IEnumerable<OnlineTransaction> userTransactions;
+            IEnumerable<OnlineTransactionDetail> userTransactionDetails = Enumerable.Empty<OnlineTransactionDetail>();
+            IEnumerable<Product> productDetails = Enumerable.Empty<Product>();
+
+            // userTransactions = _transactionRepo.Transactions.Where(p => p.userKey == currentUserID && && p.transactionID == savedXact.transactionID );
+            userTransactions = _transactionRepo.Transactions.Where(p => p.userKey == "cg3002" && p.transactionID == savedXact.transactionID );
+            foreach (var xact in userTransactions)
+            {
+                userTransactionDetails = userTransactionDetails.Concat(_transactionDetailRepo.TransactionDetails.Where(p => p.transactionID == xact.transactionID));
+            }
+
+            foreach (var item in userTransactionDetails)
+            {
+                productDetails = productDetails.Concat(_productRepo.Products.Where(p => p.barcode == item.barcode));
+            }
+
+            var user = new OnlineTransactionsViewModel
+            {
+                onlineTransactions = userTransactions,
+                onlineTransactionDetails = userTransactionDetails,
+                products = productDetails
+            };
+
+            string userEmail = Membership.GetUser(User.Identity.Name,true).Email;
+            string subject = "Transaction details for transaction ID:" + savedXact.transactionID + " dated :" + savedXact.date;
+            new MailController().SampleEmail(user, subject, userEmail).Deliver();
+
+            return RedirectToAction("LogOn","Account");
+
+        }
+        public OnlineTransaction saveCartItems(Cart cart)
+        {
+            
             int nearestShopID;
             OnlineTransaction transaction = new OnlineTransaction();
-            transaction.cashierID = 1;
             transaction.date = DateTime.Now;
             if (_transactionRepo.Transactions.Count() != 0)
                 transaction.transactionID = _transactionRepo.Transactions.Max(t => t.transactionID) + 1;
@@ -82,6 +151,7 @@ namespace OnlineShopping.WebUI.Controllers
                 transaction.transactionID = 1;
 
             int transactionID = getTransactionID(transaction);
+
 
             foreach (var line in cart.Lines)
             {
@@ -112,6 +182,9 @@ namespace OnlineShopping.WebUI.Controllers
                     //Reduce quantity from warehouse table
                 }
             }
+
+            return transaction;
+
         }
 
         [HttpPost]
@@ -123,8 +196,12 @@ namespace OnlineShopping.WebUI.Controllers
             }
             if (ModelState.IsValid)
             {
-                saveCartItems(cart); //To update local shop DBs with the transactions
-                orderProcessor.ProcessOrder(cart, shippingDetails); //E-mail the customer regarding items purchased
+                //OnlineTransaction xact= saveCartItems(cart); //To update local shop DBs with the transactions
+                //orderProcessor.ProcessOrder(cart, shippingDetails); //E-mail the customer regarding items purchased
+                OnlineTransaction xact = new OnlineTransaction();
+                xact.transactionID = 3;
+                sendCustomerEmail(xact);
+
                 cart.Clear();
                 return View("Completed");
             }

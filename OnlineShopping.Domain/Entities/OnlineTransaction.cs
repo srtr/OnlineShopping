@@ -10,9 +10,11 @@ namespace OnlineShopping.Domain.Entities
     public class OnlineTransaction
     {
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key, Column(Order = 0)]
         public int transactionID { get; set; }
         public DateTime date { get; set; }
-        public int cashierID { get; set; }
         public string userKey { get; set; }
+        public string shippingAddress { get; set; }
+        public decimal totalTransactionCost { get; set; }
     }
 }

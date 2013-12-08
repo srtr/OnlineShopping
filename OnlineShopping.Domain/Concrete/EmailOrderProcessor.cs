@@ -61,13 +61,7 @@ namespace OnlineShopping.Domain.Concrete
                 body.AppendFormat("Total order value: {0:c}", cart.ComputeTotalValue())
                 .AppendLine("---")
                 .AppendLine("Ship to:")
-                .AppendLine(shippingInfo.Line1)
-                .AppendLine(shippingInfo.Line2 ?? "")
-                .AppendLine(shippingInfo.Line3 ?? "")
-                .AppendLine(shippingInfo.City)
-                .AppendLine(shippingInfo.Country)
-                .AppendLine(shippingInfo.Zip)
-                .AppendLine("---");
+                .AppendLine(shippingInfo.shippingAddress);
                 MailMessage mailMessage = new MailMessage(
                 emailSettings.MailFromAddress, // From 
                 emailSettings.MailToAddress, // To 

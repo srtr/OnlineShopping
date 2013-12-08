@@ -1,0 +1,84 @@
+﻿@model OnlineShopping.WebUI.Models.OnlineTransactionsViewModel
+<html>
+    @{Layout = null;
+        }
+<head>
+    <style type="text/css">
+        table {
+            border: solid 1px #e8eef4;
+            border-collapse: collapse;
+        }
+
+            table td {
+                padding: 5px;
+                border: solid 1px #e8eef4;
+            }
+
+            table th {
+                padding: 6px 5px;
+                text-align: left;
+                background-color: #e8eef4;
+                border: solid 1px #e8eef4;
+            }
+    </style>
+</head>
+<body>
+    Dear @User.Identity.Name,<br />
+    <br />
+
+    Greetings from pizza!<br />
+    We thank you for your order. This email contains your transaction summary.
+    <br />
+    Please find below the summary of your order <font color="blue">@Model.onlineTransactions.ElementAt(0).transactionID</font> at pizza:<br />
+
+
+    <h4>Item(s) purchased:</h4>
+    <table>
+        <tr>
+
+            <th>Product Details
+            </th>
+            <th>Purchased
+                <br />
+                Quantity
+            </th>
+            <th class="NumericCol">Sub Total
+            </th>
+
+        </tr>
+        @{ 
+            foreach (var item in Model.onlineTransactionDetails)
+            {
+                string barcode = @item.barcode;
+                var name = @Model.products.Where(p => p.barcode == barcode).Select(p => p.productName).FirstOrDefault();
+            <tr>
+                
+                <td>
+                    @Model.products.Where(p => p.barcode == item.barcode).Select(p => p.productName).FirstOrDefault()
+                </td>
+                <td>
+                    @item.unitSold
+                </td>
+                <td class="NumericCol">$ (@item.totalCost)
+                </td>
+
+            </tr>
+            }
+        }
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td>
+                <h4>$ (@Model.onlineTransactions.First().totalTransactionCost)</h4>
+            </td>
+        </tr>
+
+    </table>
+    <br />
+    <br />
+    <strong>Order has been shipped to @Model.onlineTransactions.First().shippingAddress</strong>
+    Thank you for shopping with us!<br />
+
+</body>
+</html>

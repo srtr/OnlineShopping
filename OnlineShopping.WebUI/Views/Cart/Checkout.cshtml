@@ -2,26 +2,25 @@
 @{ 
     ViewBag.Title = "Checkout"; 
 }
-<h2>Check out now</h2>
+<h2>Check out</h2>
 Please enter your details, and we'll ship your goods right away! 
 @using (Html.BeginForm())
 { 
     
     @Html.ValidationSummary() 
 
-    <h3>Address</h3> 
-    <div>Line 1: @Html.EditorFor(x => x.Line1)</div> 
-    <div>Line 2: @Html.EditorFor(x => x.Line2)</div> 
-    <div>Line 3: @Html.EditorFor(x => x.Line3)</div> 
-    <div>City: @Html.EditorFor(x => x.City)</div> 
-    <div>Zip: @Html.EditorFor(x => x.Zip)</div> 
-    <div>Country: @Html.EditorFor(x => x.Country)</div> 
-    
-    
-    
-    
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
+                <legend><i class="glyphicon glyphicon-pencil"></i>Address</legend>
+                <input class="form-control" data-val="true" data-val-required="Please enter the address line" id="shippingAddress" name="shippingAddress" type="text" value="" required />
+                <br />     
+            </div>
+        </div>
+    </div>
 
     <p align="center">
-        <input class="actionButtons" type="submit" value="Complete order" />
+        <button class="btn btn-success" type="submit">Complete Order</button>
     </p> 
+    
 }
