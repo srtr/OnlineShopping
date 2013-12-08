@@ -1,20 +1,28 @@
 ﻿@model OnlineShopping.Domain.Entities.Cart
-
 @{ 
-Layout = null; 
-} 
+    Layout = null; 
+}
 
-<button type="button" class="btn btn-info" onclick=proceedToCheckout()>
-    <i class="glyphicon glyphicon-shopping-cart"> </i>
+@if (Request.IsAuthenticated)
+{
+    <button type="button" class="btn btn-warning" onclick="proceedToOrderHistory()">
+        Order History
+    </button>
+}
+
+<button type="button" class="btn btn-info" onclick="proceedToCheckout()">
+    <i class="glyphicon glyphicon-shopping-cart"></i>
     @Model.Lines.Sum(x => x.Quantity) item(s),
     @Model.ComputeTotalValue().ToString("c")
 </button>
 
 <script>
+    function proceedToOrderHistory() {
+        window.location.href = "@Url.Action("Orders", "Cart")";
+    }
     function proceedToCheckout() {
         window.location.href = "@Url.Action("Index", "Cart")";
     }
-    
+
 </script>
 
- 

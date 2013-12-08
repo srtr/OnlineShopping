@@ -3,12 +3,10 @@
     ViewBag.Title = "Products";
     
 }
-
 <div class="row">
     @foreach (var p in Model.Products)
     {
         Html.RenderPartial("ProductSummary", p);
-
     }
 </div>
 
@@ -17,5 +15,15 @@
 </ul>
 
 <ul class="pager">
+    @{ if (@Model.PagingInfo.CurrentPage > @Model.PagingInfo.TotalPages)
+       {
+        <li><a href="#">0 of @Model.PagingInfo.TotalPages </a></li>
+       }
+       else
+       {
         <li><a href="#">@Model.PagingInfo.CurrentPage of @Model.PagingInfo.TotalPages </a></li>
+       }
+    }
+
 </ul>
+

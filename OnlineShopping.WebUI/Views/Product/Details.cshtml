@@ -1,0 +1,9 @@
+﻿@model OnlineShopping.WebUI.Models.ProductsDetailsViewModel
+@{
+    if(Model.product == null){
+        <div class="alert alert-danger">No Such Product Exists</div>
+    }
+    else{
+    Html.RenderPartial("ProductSummary",Model.product);
+    }
+}

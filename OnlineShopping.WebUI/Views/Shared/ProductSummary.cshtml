@@ -11,14 +11,8 @@
             <div class="the-price">
                 <h4>@Model.costPrice.ToString("c")
                     <span class="subscript">/item</span></h4>
-                <small>FREE shipping</small>
+                <small>Description</small>
             </div>
-            <table class="table">
-                <tr>
-                    <td>Manufacturer name
-                    </td>
-                </tr>
-            </table>
         </div>
         <div class="panel-footer">
             @using (Html.BeginForm("AddToCart", "Cart"))
