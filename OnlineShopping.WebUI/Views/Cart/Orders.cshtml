@@ -1,5 +1,9 @@
 ﻿@model OnlineShopping.WebUI.Models.OnlineTransactionsViewModel
 @{
+    ViewBag.Title = "Order History";
+    
+}
+@{
     
     <div class="col-sm-12 col-md-10 col-md-offset-1">
         <table class="table table-hover">
@@ -28,11 +32,8 @@
                                 <a class="thumbnail pull-left" href="#">
                                     <img class="media-object" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/72/product-icon.png" style="width: 72px; height: 72px;">
                                 </a>
-                                <div class="media-body"> 
+                                <div class="media-body">
                                     <h4 class="media-heading"><a href="#">@Model.products.Where(p => p.barcode == item.barcode).Select(p => p.productName).FirstOrDefault()</a></h4>
-                                    <h5 class="media-heading">by <a href="#">@item.unitSold</a></h5>
-                   
-                                    <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>
                                 </div>
                             </div>
                         </td>
