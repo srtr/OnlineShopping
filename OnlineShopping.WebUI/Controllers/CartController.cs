@@ -16,14 +16,12 @@ namespace OnlineShopping.WebUI.Controllers
         private IProductRepository _productRepo;
         private ICategoryRepository _categoryRepo;
         private IManufacturerRepository _manufacturerRepo;
-        private IOrderProcessor orderProcessor;
         private IOnlineTransactionRepository _transactionRepo;
         private IOnlineTransactionDetailRepository _transactionDetailRepo;
         
 
-        public CartController(IProductRepository productRepo,ICategoryRepository categoryRepo,IManufacturerRepository manufacturerRepo,IOrderProcessor proc, IOnlineTransactionRepository transactionRepo, IOnlineTransactionDetailRepository transactionDetailRepo)
+        public CartController(IProductRepository productRepo,ICategoryRepository categoryRepo,IManufacturerRepository manufacturerRepo, IOnlineTransactionRepository transactionRepo, IOnlineTransactionDetailRepository transactionDetailRepo)
         {
-            orderProcessor = proc;
             _transactionRepo = transactionRepo;
             _transactionDetailRepo = transactionDetailRepo;
             _productRepo = productRepo;
@@ -139,9 +137,8 @@ namespace OnlineShopping.WebUI.Controllers
             return RedirectToAction("LogOn","Account");
 
         }
-        public OnlineTransaction saveCartItems(Cart cart)
-        {
-            
+        public OnlineTransaction saveCartItems(Cart cart,string shippingAddress)
+        {          
             int nearestShopID;
             OnlineTransaction transaction = new OnlineTransaction();
             transaction.date = DateTime.Now;
@@ -190,16 +187,16 @@ namespace OnlineShopping.WebUI.Controllers
         [HttpPost]
         public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
         {
+
             if (cart.Lines.Count() == 0)
             {
                 ModelState.AddModelError("", "Sorry, your cart is empty!");
             }
             if (ModelState.IsValid)
             {
-                //OnlineTransaction xact= saveCartItems(cart); //To update local shop DBs with the transactions
-                //orderProcessor.ProcessOrder(cart, shippingDetails); //E-mail the customer regarding items purchased
-                OnlineTransaction xact = new OnlineTransaction();
-                xact.transactionID = 3;
+                OnlineTransaction xact= saveCartItems(cart,shippingDetails.shippingAddress); //To update local shop DBs with the transactions
+//                OnlineTransaction xact = new OnlineTransaction();
+//                xact.transactionID = 3;
                 sendCustomerEmail(xact);
 
                 cart.Clear();

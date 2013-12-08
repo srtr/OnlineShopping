@@ -35,15 +35,6 @@ namespace OnlineShopping.WebUI.Infrastructure
             ninjectKernel.Bind<ICategoryRepository>().To<EFCategoryRepository>();
             ninjectKernel.Bind<IOnlineTransactionDetailRepository>().To<EFOnlineTransactionDetailRepository>();
             ninjectKernel.Bind<IOnlineTransactionRepository>().To<EFOnlineTransactionRepository>();
-
-            EmailSettings emailSettings = new EmailSettings
-            {
-                WriteAsFile
-                = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile"] ?? "false")
-            };
-            ninjectKernel.Bind<IOrderProcessor>()
-            .To<EmailOrderProcessor>().WithConstructorArgument("settings", emailSettings);
-
         }
     }
 }
