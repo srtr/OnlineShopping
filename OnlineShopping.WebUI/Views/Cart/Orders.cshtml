@@ -20,12 +20,14 @@
 
                 @foreach (var xact in Model.onlineTransactions)
                 {
+                    decimal totalCost = 0;
                     <td class="alert alert-success"><strong>Date of Purchase: @xact.date</strong></td>
                     var detail = Model.onlineTransactionDetails.Where(p => p.transactionID == xact.transactionID);
                     if (detail.ToArray().Length > 0)
                     {
                         foreach (var item in detail)
                         {
+                            totalCost = totalCost + @item.totalCost;
                     <tr>
                         <td class="col-sm-8 col-md-6">
                             <div class="media">
@@ -52,7 +54,7 @@
                             <h4>Total</h4>
                         </td>
                         <td class="text-right">
-                            <h4>$@xact.totalTransactionCost</h4>
+                            <h4>$@totalCost</h4>
                         </td>
                     </tr>
                     }

@@ -47,8 +47,11 @@
 
         </tr>
         @{ 
+            decimal totalCost = 0;
+            
             foreach (var item in Model.onlineTransactionDetails)
             {
+                totalCost = totalCost + @item.totalCost;
                 string barcode = @item.barcode;
                 var name = @Model.products.Where(p => p.barcode == barcode).Select(p => p.productName).FirstOrDefault();
             <tr>
@@ -70,7 +73,7 @@
             <td></td>
             <td></td>
             <td>
-                <h4>$ (@Model.onlineTransactions.First().totalTransactionCost)</h4>
+                <h4>$ (@totalCost)</h4>
             </td>
         </tr>
 
