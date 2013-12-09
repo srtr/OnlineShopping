@@ -15,6 +15,7 @@ namespace OnlineShopping.Domain.Concrete
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<OnlineTransaction> Transactions { get; set; }
         public DbSet<OnlineTransactionDetail> TransactionDetails { get; set; }
-        //public DbSet<Customer> Customers { get; set; }
+        public DbSet<Outlet> Outlets { get; set;}
+        public DbSet<OutletInventory> OutletInventories { get; set; }
     }
 }

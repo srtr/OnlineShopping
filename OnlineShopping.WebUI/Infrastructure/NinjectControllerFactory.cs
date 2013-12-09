@@ -35,6 +35,8 @@ namespace OnlineShopping.WebUI.Infrastructure
             ninjectKernel.Bind<ICategoryRepository>().To<EFCategoryRepository>();
             ninjectKernel.Bind<IOnlineTransactionDetailRepository>().To<EFOnlineTransactionDetailRepository>();
             ninjectKernel.Bind<IOnlineTransactionRepository>().To<EFOnlineTransactionRepository>();
+            ninjectKernel.Bind<IOutletRepository>().To<EFOutletRepository>();
+            ninjectKernel.Bind<IOutletInventoryRepository>().To<EFOutletInventoryRepository>();
         }
     }
 }
