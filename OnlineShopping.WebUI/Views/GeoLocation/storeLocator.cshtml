@@ -62,35 +62,38 @@
             mapTypeId: 'roadmap'
         };
 
-        alert(window.defaultLat);
+        //alert(window.defaultLat);
 
         // Display a map on the page
         map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
         map.setTilt(45);
 
-       
-
         // Multiple Markers
         var markers = [
-            ['London Eye, London', 51.503454, -0.119562],
-            ['Palace of Westminster, London', 59.3325215, 18.0643818],
-            ['position',window.defaultLat,window.defaultLong],
-        ];
-        // Info Window Content
-        var infoWindowContent = [
-            ['<div class="info_content">' +
-            '<h3>London Eye</h3>' +
-            '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' + '</div>'],
-            ['<div class="info_content">' +
-            '<h3>Palace of Westminster</h3>' +
-            '<p>The Palace of Westminster is the meeting place of the House of Commons and the House of Lords, the two houses of the Parliament of the United Kingdom. Commonly known as the Houses of Parliament after its tenants.</p>' +
-            '</div>'],
-            ['<div> positioningnsad </div>']
+            ['Store 1', 1.370191, 103.849430],
+            ['Store 2', 1.344192, 103.720942],
+            ['Store 3', 1.276275, 103.791409],
+            ['Store 4', 1.316519,103.882990],
+            ['Store 5', 1.437162, 103.786602],
+            ['You',window.defaultLat,window.defaultLong],
         ];
 
+        // Info Window Content
+        //var infoWindowContent = [
+        //    ['<div class="info_content">' +
+        //    '<h3>London Eye</h3>' +
+        //    '<p>The London Eye is a giant Ferris wheel situated on the banks of the River Thames. The entire structure is 135 metres (443 ft) tall and the wheel has a diameter of 120 metres (394 ft).</p>' + '</div>'],
+        //    ['<div class="info_content">' +
+        //    '<h3>Palace of Westminster</h3>' +
+        //    '<p>The Palace of Westminster is the meeting place of the House of Commons and the House of Lords, the two houses of the Parliament of the United Kingdom. Commonly known as the Houses of Parliament after its tenants.</p>' +
+        //    '</div>'],
+        //    ['<div> positioningnsad </div>']
+        //];
+
         // Display multiple markers on a map
-        var infoWindow = new google.maps.InfoWindow(), marker, i;
+        //var infoWindow = new google.maps.InfoWindow(), marker, i;
         // Loop through our array of markers & place each one on the map  
+
         for (i = 0; i < markers.length; i++) {
             var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
             bounds.extend(position);
@@ -114,54 +117,11 @@
 
         // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
         var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function (event) {
-            this.setZoom(14);
+            this.setZoom(11);
             google.maps.event.removeListener(boundsListener);
         });
-
     }
 
 </script>
 
 
-
-<style>
-    #map {
-        width: 700px;
-        height: 500px;
-        margin: 50px auto;
-    }
-</style>
-
-<div id="map"></div>
-<script src="http://www.google.com/jsapi?key=ABQIAAAAlJFc1lrstqhgTl3ZYo38bBQcfCcww1WgMTxEFsdaTsnOXOVOUhTplLhHcmgnaY0u87hQyd-n-kiOqQ"></script>
-
-<script>
-
-    (function () {
-        
-        // Check for geolocation support	
-        if (navigator.geolocation) {
-            // Get current position
-            navigator.geolocation.getCurrentPosition(function (position) {
-                // Success!
-                markOutLocation(position.coords.latitude, position.coords.longitude);
-                var x = position.coords.latitude;
-                // alert(x);
-                var y = position.coords.longitude;
-
-            },
-                function () {
-                    // Gelocation fallback: Defaults to Stockholm, Sweden
-                    markerText = "<p>Please accept geolocation for me to be able to find you. <br>I've put you in Stockholm for now.</p>";
-                    markOutLocation(59.3325215, 18.0643818);
-                }
-            );
-        }
-        else {
-            // No geolocation fallback: Defaults to Eeaster Island, Chile
-            markerText = "<p>No location support. Try Easter Island for now. :-)</p>";
-            markOutLocation(-27.121192, -109.366424);
-        }
-    });
-    })();
-				</script>
